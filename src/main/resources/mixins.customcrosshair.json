@@ -1,0 +1,13 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.7",
+  "package": "me.realrobotix.customcrosshair.mixin",
+  "refmap": "mixins.customcrosshair.refmap.json",
+  "injectors": {
+    "maxShiftBy": 5
+  },
+  "client": [
+    "GuiIngameMixin"
+  ],
+  "verbose": true
+}
