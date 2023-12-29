@@ -2,10 +2,15 @@ package me.realrobotix.customcrosshair.config
 
 import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.annotations.*
+import cc.polyfrost.oneconfig.config.core.ConfigUtils
 import cc.polyfrost.oneconfig.config.core.OneColor
 import cc.polyfrost.oneconfig.config.data.Mod
 import cc.polyfrost.oneconfig.config.data.ModType
+import cc.polyfrost.oneconfig.config.elements.BasicOption
+import cc.polyfrost.oneconfig.config.elements.OptionPage
 import me.realrobotix.customcrosshair.CustomCrosshair
+import me.realrobotix.customcrosshair.annotations.CrosshairPreview
+import java.lang.reflect.Field
 
 /**
  * The main Config entrypoint that extends the Config type and inits the config options.
@@ -17,11 +22,26 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
         initialize()
     }
 
-    @Dropdown(name = "Crosshair Type", options = ["Default", "Cross", "Circle", "Square", "Arrow"], category = "General")
-    var crosshairType = 1
+    override fun getCustomOption(
+        field: Field?,
+        annotation: CustomOption,
+        page: OptionPage?,
+        mod: Mod?,
+        migrate: Boolean
+    ): BasicOption? {
+        var option: BasicOption? = null
+        when (annotation.id) {
+            "crosshairPreview" -> {
+                val myOption: CrosshairPreview = ConfigUtils.findAnnotation(field, CrosshairPreview::class.java)
+                option = CrosshairPreviewOption(field, myOption, "Crosshair Preview", myOption.category, myOption.subcategory, myOption.size)
+                ConfigUtils.getSubCategory(page, myOption.category, myOption.subcategory).options.add(option)
+            }
+        }
+        return option
+    }
 
-    @Switch(name = "Dynamic Bow", category = "General")
-    var dynamicBowEnabled = true
+    @CrosshairPreview(category = "General")
+    var a = "a"
 
     @Switch(name = "Adjust to Gui Scale", category = "General")
     var guiScaling = false
@@ -35,6 +55,12 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     @Switch(name = "Debug", description = "Whether or not to show the crosshair in debug mode", category = "General", subcategory = "Visibility")
     var visibleDebug = false
 
+    @Switch(name = "Spectator", description = "Whether or not to show the crosshair in spectator mode", category = "General", subcategory = "Visibility")
+    var visibleSpectator = true
+
+
+    @CrosshairPreview(category = "Cross")
+    var b = "b"
 
     @Switch(name = "Cross", category = "Cross")
     var crossEnabled = true
@@ -57,6 +83,12 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     @Slider(name = "Cross Rotation", min = 0f, max = 360f, step = 1, instant = true, category = "Cross", subcategory = "Size")
     var crossRotation = 45
 
+    @Switch(name = "Dynamic Bow", category = "Cross", subcategory = "Animation")
+    var crossDynamicBow = true
+
+    @Slider(name = "Dynamic Bow Multiplier", min = 0f, max = 10f, step = 1, instant = true, category = "Cross", subcategory = "Animation")
+    var crossDynamicBowMultiplier = 4
+
     @Checkbox(name = "Top", category = "Cross", subcategory = "Lines")
     var crossTopLine = true
 
@@ -70,7 +102,7 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var crossRightLine = true
 
     @Color(name = "Default Color", category = "Cross", subcategory = "Color", size = 0)
-    var crossColor: OneColor = OneColor(100,100,255,10000.0f)
+    var crossColor: OneColor = OneColor(100,100,255,10.0f)
 
     @Switch(name = "Player Color", category = "Cross", subcategory = "Color")
     var crossEnablePlayerColor = false
@@ -91,6 +123,9 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var crossFriendlyColor: OneColor = OneColor(0,255,0,255)
 
 
+    @CrosshairPreview(category = "Square")
+    var c = "c"
+
     @Switch(name = "Square", category = "Square")
     var squareEnabled = false
 
@@ -100,6 +135,9 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     @Slider(name = "Square Height", min = 0f, max = 35f, step = 1, instant = true, category = "Square", subcategory = "Size")
     var squareHeight = 12
 
+    @Slider(name = "Square Gap", min = 0f, max = 10f, step = 1, instant = true, category = "Square", subcategory = "Size")
+    var squareGap = 0
+
     @Slider(name = "Square Thickness", min = 0f, max = 10f, step = 1, instant = true, category = "Square", subcategory = "Size")
     var squareThickness = 2
 
@@ -108,6 +146,12 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
 
     @Slider(name = "Square Rotation", min = 0f, max = 360f, step = 1, instant = true, category = "Square", subcategory = "Size")
     var squareRotation = 45
+
+    @Switch(name = "Dynamic Bow", category = "Square", subcategory = "Animation")
+    var squareDynamicBow = true
+
+    @Slider(name = "Dynamic Bow Multiplier", min = 0f, max = 10f, step = 1, instant = true, category = "Square", subcategory = "Animation")
+    var squareDynamicBowMultiplier = 4
 
     @Checkbox(name = "Top", category = "Square", subcategory = "Lines")
     var squareTopLine = true
@@ -122,7 +166,7 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var squareRightLine = true
 
     @Color(name = "Default Color", category = "Square", subcategory = "Color", size = 0)
-    var squareColor: OneColor = OneColor(100,100,255,10000.0f)
+    var squareColor: OneColor = OneColor(100,100,255,10.0f)
 
     @Switch(name = "Player Color", category = "Square", subcategory = "Color")
     var squareEnablePlayerColor = false
@@ -143,6 +187,55 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var squareFriendlyColor: OneColor = OneColor(0,255,0,255)
 
 
+    @CrosshairPreview(category = "Circle")
+    var d = "d"
+
+    @Switch(name = "Circle", category = "Circle")
+    var circleEnabled = false
+
+    @Slider(name = "Circle X Radius", min = 0f, max = 35f, step = 1, instant = true, category = "Circle", subcategory = "Size")
+    var circleXRadius = 12
+
+    @Slider(name = "Circle Y Radius", min = 0f, max = 35f, step = 1, instant = true, category = "Circle", subcategory = "Size")
+    var circleYRadius = 12
+
+    @Slider(name = "Circle Thickness", min = 0f, max = 10f, step = 1, instant = true, category = "Circle", subcategory = "Size")
+    var circleThickness = 2
+
+    @Slider(name = "Circle Rotation", min = 0f, max = 360f, step = 1, instant = true, category = "Circle", subcategory = "Size")
+    var circleRotation = 45
+
+    @Switch(name = "Dynamic Bow", category = "Circle", subcategory = "Animation")
+    var circleDynamicBow = true
+
+    @Slider(name = "Dynamic Bow Multiplier", min = 0f, max = 10f, step = 1, instant = true, category = "Circle", subcategory = "Animation")
+    var circleDynamicBowMultiplier = 4
+
+    @Color(name = "Default Color", category = "Circle", subcategory = "Color", size = 0)
+    var circleColor: OneColor = OneColor(100,100,255,10.0f)
+
+    @Switch(name = "Player Color", category = "Circle", subcategory = "Color")
+    var circleEnablePlayerColor = false
+
+    @Color(name = "Player Color", category = "Circle", subcategory = "Color")
+    var circlePlayerColor: OneColor = OneColor(0,0,255,255)
+
+    @Switch(name = "Hostile Color", category = "Circle", subcategory = "Color")
+    var circleEnableHostileColor = false
+
+    @Color(name = "Hostile Color", category = "Circle", subcategory = "Color")
+    var circleHostileColor: OneColor = OneColor(255,0,0,255)
+
+    @Switch(name = "Friendly Color", category = "Circle", subcategory = "Color")
+    var circleEnableFriendlyColor = false
+
+    @Color(name = "Friendly Color", category = "Circle", subcategory = "Color")
+    var circleFriendlyColor: OneColor = OneColor(0,255,0,255)
+
+
+    @CrosshairPreview(category = "Outline")
+    var e = "e"
+
     @Switch(name = "Outline", category = "Outline")
     var outlineEnabled = false
 
@@ -150,7 +243,7 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var outlineWidth = 1
 
     @Color(name = "Default Color", category = "Outline", subcategory = "Color", size = 0)
-    var outlineColor: OneColor = OneColor(100,100,255,10000.0f)
+    var outlineColor: OneColor = OneColor(100,100,255,10.0f)
 
     @Switch(name = "Player Color", category = "Outline", subcategory = "Color")
     var outlineEnablePlayerColor = false
@@ -171,6 +264,9 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var outlineFriendlyColor: OneColor = OneColor(0,255,0,255)
 
 
+    @CrosshairPreview(category = "Dot")
+    var f = "f"
+
     @Switch(name = "Dot", category = "Dot")
     var dotEnabled = false
 
@@ -180,8 +276,11 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     @Slider(name = "Dot Size", min = 0f, max = 10f, step = 1, instant = true, category = "Dot")
     var dotSize = 0
 
+    @Slider(name = "Dot Rotation", min = 0f, max = 360f, step = 1, instant = true, category = "Dot")
+    var dotRotation = 45
+
     @Color(name= "Default Color", category = "Dot", subcategory = "Color", size = 0)
-    var dotColor: OneColor = OneColor(100,100,255,10000.0f)
+    var dotColor: OneColor = OneColor(100,100,255,10.0f)
 
     @Switch(name = "Player Color", category = "Dot", subcategory = "Color")
     var dotEnablePlayerColor = false

@@ -1,12 +1,10 @@
 package me.realrobotix.customcrosshair
 
 
+import cc.polyfrost.oneconfig.libs.universal.UResolution
 import cc.polyfrost.oneconfig.renderer.NanoVGHelper
 import me.realrobotix.customcrosshair.config.CrosshairConfig
-import me.realrobotix.customcrosshair.render.CrossRenderer
-import me.realrobotix.customcrosshair.render.DotRenderer
-import me.realrobotix.customcrosshair.render.ShapeRenderer
-import me.realrobotix.customcrosshair.render.SquareRenderer
+import me.realrobotix.customcrosshair.render.*
 import net.minecraft.client.Minecraft
 import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
@@ -14,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import java.awt.image.renderable.RenderContext
 
 
 @Mod(
@@ -28,7 +27,7 @@ object CustomCrosshair {
     const val VERSION = "@VER@"
 
     val mc: Minecraft = Minecraft.getMinecraft()
-    private val elements: Array<ShapeRenderer> = arrayOf(CrossRenderer(), SquareRenderer(), DotRenderer())
+    val elements: Array<ShapeRenderer> = arrayOf(CrossRenderer(), SquareRenderer(), CircleRenderer(), DotRenderer())
 
     @Mod.EventHandler
     fun onInit(event: FMLInitializationEvent) {
@@ -36,7 +35,7 @@ object CustomCrosshair {
         MinecraftForge.EVENT_BUS.register(this)
     }
 
-    private fun drawCrosshair(x: Float, y: Float, mcScaling: Boolean = false) {
+    fun drawCrosshair(x: Float, y: Float, mcScaling: Boolean = false) {
         for (element in elements) {
             NanoVGHelper.INSTANCE.setupAndDraw(mcScaling) { vg ->
                 element.draw(vg, x, y)
@@ -49,7 +48,7 @@ object CustomCrosshair {
         if (event.type != RenderGameOverlayEvent.ElementType.CROSSHAIRS) return
         val gs = mc.gameSettings
         val cs = CrosshairConfig
-        if (CrosshairConfig.enabled && if (gs.thirdPersonView > 0) cs.visibleThirdperson else if (gs.debugCamEnable) cs.visibleDebug else cs.visibleFirstperson) {
+        if (CrosshairConfig.enabled && if (gs.thirdPersonView > 0) cs.visibleThirdperson else if (gs.showDebugInfo && !mc.thePlayer.hasReducedDebug() && !mc.gameSettings.reducedDebugInfo) cs.visibleDebug else if (mc.playerController.isSpectator) cs.visibleSpectator else cs.visibleFirstperson) {
             if (cs.guiScaling) drawCrosshair(
                 event.resolution.scaledWidth / 2.0f,
                 event.resolution.scaledHeight / 2.0f,
@@ -60,14 +59,16 @@ object CustomCrosshair {
 
     @SubscribeEvent
     fun onRender(event: DrawScreenEvent.Post) {
-        if (CrosshairConfig.guiScaling) drawCrosshair(
-            event.mouseX.toFloat(),
-            event.mouseY.toFloat(),
-            true
-        ) else drawCrosshair(
-            event.mouseX.toFloat() * (mc.displayWidth / event.gui.width),
-            event.mouseY.toFloat() * (mc.displayHeight / event.gui.height),
-            false
-        )
+        if (false) {
+            if (CrosshairConfig.guiScaling) drawCrosshair(
+                event.mouseX.toFloat(),
+                event.mouseY.toFloat(),
+                true
+            ) else drawCrosshair(
+                event.mouseX.toFloat() * UResolution.scaleFactor.toFloat(),
+                event.mouseY.toFloat() * UResolution.scaleFactor.toFloat(),
+                false
+            )
+        }
     }
 }

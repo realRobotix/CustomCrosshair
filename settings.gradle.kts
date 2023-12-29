@@ -9,11 +9,7 @@ pluginManagement {
     plugins {
         val pgtVersion = "0.2.9" // Sets the default versions for Polyfrost Gradle Toolkit
         id("org.polyfrost.multi-version.root") version pgtVersion
-        kotlin("jvm") version "1.9.21"
     }
-}
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
 }
 
 val mod_name: String by settings

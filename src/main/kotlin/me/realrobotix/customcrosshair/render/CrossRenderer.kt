@@ -10,7 +10,7 @@ class CrossRenderer : ShapeRenderer() {
             if (cs.crossEnableFriendlyColor) cs.crossFriendlyColor else cs.crossColor,
             if (cs.crossEnableHostileColor) cs.crossHostileColor else cs.crossColor
         ).rgb
-        val gap: Float = cs.crossGap.toFloat()
+        val gap: Float = if (cs.crossDynamicBow) cs.crossGap.toFloat() + (getDynamicBowValue() * cs.crossDynamicBowMultiplier * 5) else cs.crossGap.toFloat()
         val height: Float = cs.crossHeight.toFloat()
         val width: Float = cs.crossWidth.toFloat()
         val thickness: Float = cs.crossThickness.toFloat()
@@ -23,22 +23,22 @@ class CrossRenderer : ShapeRenderer() {
             if (cs.outlineEnableHostileColor) cs.outlineHostileColor else cs.outlineColor
         ).rgb
         nanoVGHelper.translate(vg, x, y)
-        nanoVGHelper.rotate(vg, Math.toRadians(cs.crossRotation.toDouble()).toFloat())
+        nanoVGHelper.rotate(vg, cs.crossRotation.toDouble())
         //draw upper line
         if (cs.crossTopLine) drawRoundedOutlinedRect(
-            vg, -thickness / 2.0f, -gap, thickness, -gap - height, color, rounding, outline, outlineColor
+            vg, -thickness / 2.0f, -gap, thickness, -height, color, rounding, outline, outlineColor
         )
         //draw lower line
         if (cs.crossBottomLine) drawRoundedOutlinedRect(
-            vg, -thickness / 2.0f, gap, thickness, gap + height, color, rounding, outline, outlineColor
+            vg, -thickness / 2.0f, gap, thickness, height, color, rounding, outline, outlineColor
         )
         //draw left line
         if (cs.crossLeftLine) drawRoundedOutlinedRect(
-            vg, -gap, -thickness / 2.0f, -gap - width, thickness, color, rounding, outline, outlineColor
+            vg, -gap, -thickness / 2.0f, -width, thickness, color, rounding, outline, outlineColor
         )
         //draw right line
         if (cs.crossRightLine) drawRoundedOutlinedRect(
-            vg, gap, -thickness / 2.0f, gap + width, thickness, color, rounding, outline, outlineColor
+            vg, gap, -thickness / 2.0f, width, thickness, color, rounding, outline, outlineColor
         )
     }
 }
