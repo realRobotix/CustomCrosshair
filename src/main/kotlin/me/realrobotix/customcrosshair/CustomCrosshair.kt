@@ -35,7 +35,7 @@ object CustomCrosshair {
         MinecraftForge.EVENT_BUS.register(this)
     }
 
-    fun drawCrosshair(x: Float, y: Float, mcScaling: Boolean = false) {
+    private fun drawCrosshair(x: Float, y: Float, mcScaling: Boolean = false) {
         for (element in elements) {
             NanoVGHelper.INSTANCE.setupAndDraw(mcScaling) { vg ->
                 element.draw(vg, x, y)
