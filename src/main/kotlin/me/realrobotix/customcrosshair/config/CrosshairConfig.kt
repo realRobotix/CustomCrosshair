@@ -40,11 +40,11 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
         return option
     }
 
-    @CrosshairPreview(category = "General")
-    var a = "a"
-
     @Switch(name = "Adjust to Gui Scale", category = "General")
     var guiScaling = false
+
+    @CrosshairPreview(category = "General")
+    var a = "a"
 
     @Switch(name = "First Person", description = "Whether or not to show the crosshair in first person", category = "General", subcategory = "Visibility")
     var visibleFirstperson = true
@@ -59,11 +59,11 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var visibleSpectator = true
 
 
-    @CrosshairPreview(category = "Cross")
-    var b = "b"
-
     @Switch(name = "Cross", category = "Cross")
     var crossEnabled = true
+
+    @CrosshairPreview(category = "Cross")
+    var b = "b"
 
     @Slider(name = "Cross Width", min = 0f, max = 35f, step = 1, instant = true, category = "Cross", subcategory = "Size")
     var crossWidth = 12
@@ -123,11 +123,11 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var crossFriendlyColor: OneColor = OneColor(0,255,0,255)
 
 
-    @CrosshairPreview(category = "Square")
-    var c = "c"
-
     @Switch(name = "Square", category = "Square")
     var squareEnabled = false
+
+    @CrosshairPreview(category = "Square")
+    var c = "c"
 
     @Slider(name = "Square Width", min = 0f, max = 35f, step = 1, instant = true, category = "Square", subcategory = "Size")
     var squareWidth = 12
@@ -187,11 +187,11 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var squareFriendlyColor: OneColor = OneColor(0,255,0,255)
 
 
-    @CrosshairPreview(category = "Circle")
-    var d = "d"
-
     @Switch(name = "Circle", category = "Circle")
     var circleEnabled = false
+
+    @CrosshairPreview(category = "Circle")
+    var d = "d"
 
     @Slider(name = "Circle X Radius", min = 0f, max = 35f, step = 1, instant = true, category = "Circle", subcategory = "Size")
     var circleXRadius = 12
@@ -233,11 +233,11 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var circleFriendlyColor: OneColor = OneColor(0,255,0,255)
 
 
-    @CrosshairPreview(category = "Outline")
-    var e = "e"
-
     @Switch(name = "Outline", category = "Outline")
     var outlineEnabled = false
+
+    @CrosshairPreview(category = "Outline")
+    var e = "e"
 
     @Slider(name = "Outline Width", min = 0f, max = 10f, step = 1, instant = true, category = "Outline")
     var outlineWidth = 1
@@ -264,11 +264,11 @@ object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCr
     var outlineFriendlyColor: OneColor = OneColor(0,255,0,255)
 
 
-    @CrosshairPreview(category = "Dot")
-    var f = "f"
-
     @Switch(name = "Dot", category = "Dot")
     var dotEnabled = false
+
+    @CrosshairPreview(category = "Dot")
+    var f = "f"
 
     @Dropdown(name = "Dot Type", options = ["Circle", "Square"], category = "Dot")
     var dotType = 0

@@ -6,7 +6,7 @@ import cc.polyfrost.oneconfig.config.annotations.CustomOption
 @Target(AnnotationTarget.FIELD)
 @CustomOption(id = "crosshairPreview")
 annotation class CrosshairPreview(
-    val size: Int = 0,
+    val size: Int = 1,
     val category: String = "General",
     val subcategory: String = ""
 )

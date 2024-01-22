@@ -12,7 +12,6 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import java.awt.image.renderable.RenderContext
 
 
 @Mod(
@@ -27,6 +26,7 @@ object CustomCrosshair {
     const val VERSION = "@VER@"
 
     val mc: Minecraft = Minecraft.getMinecraft()
+    var drawAtCursor = false
     val elements: Array<ShapeRenderer> = arrayOf(CrossRenderer(), SquareRenderer(), CircleRenderer(), DotRenderer())
 
     @Mod.EventHandler
@@ -59,7 +59,7 @@ object CustomCrosshair {
 
     @SubscribeEvent
     fun onRender(event: DrawScreenEvent.Post) {
-        if (false) {
+        if (drawAtCursor) {
             if (CrosshairConfig.guiScaling) drawCrosshair(
                 event.mouseX.toFloat(),
                 event.mouseY.toFloat(),
@@ -69,6 +69,7 @@ object CustomCrosshair {
                 event.mouseY.toFloat() * UResolution.scaleFactor.toFloat(),
                 false
             )
+            drawAtCursor = false
         }
     }
 }
