@@ -31,7 +31,7 @@ object CustomCrosshair {
 
     @Mod.EventHandler
     fun onInit(event: FMLInitializationEvent) {
-        CrosshairConfig
+        CrosshairConfig.initialize()
         MinecraftForge.EVENT_BUS.register(this)
     }
 
