@@ -18,10 +18,6 @@ import java.lang.reflect.Field
  */
 object CrosshairConfig : Config(Mod(CustomCrosshair.NAME, ModType.HUD), CustomCrosshair.MODID + ".json") {
 
-    init {
-        initialize()
-    }
-
     override fun getCustomOption(
         field: Field?,
         annotation: CustomOption,

@@ -4,7 +4,7 @@
     "name": "${name}",
     "description": "Enhance your Minecraft experience with the Custom Crosshair mod! This Forge 1.8.9 modification allows you to personalize your crosshair, providing a variety of elements and dynamic features to suit your gameplay style. The mod offers a seamless integration with your favorite version of Minecraft, giving you the power to configure and customize your crosshair to perfection.",
     "version": "${version}",
-    "mcversion": "1.8.9",
+    "mcversion": "${mcVersionStr}",
     "url": "https://modrinth.com/project/custom-crosshair",
     "updateUrl": "",
     "authorList": [
