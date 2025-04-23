@@ -54,7 +54,7 @@ abstract class ShapeRenderer {
 
     fun getEntityLookingAtType(): Int {
         if (mc.theWorld == null) return -1
-        val entity = mc.objectMouseOver.entityHit ?: return -1
+        val entity = mc.objectMouseOver?.entityHit ?: return -1
         return when (entity) {
             is EntityPlayer -> 0
             is EntityAgeable -> 1
